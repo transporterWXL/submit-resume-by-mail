@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>haiyi software</title>
+    <script>
+      /**
+       * 格式化日期
+       * @param {Date|string} date - 日期对象或日期字符串
+       * @param {string} format - 格式字符串，例如 'yyyy-MM-dd hh:mm:ss'
+       * @returns {string} 格式化后的日期字符串
+       */
+      function formatDate(date, format) {
+
+        if(!date){
+            date = new Date()
+        }
+        // 如果 date 是字符串，转换为 Date 对象
+        if (typeof date === "string") {
+          date = new Date(date);
+        }
+
+        // 如果 date 不是有效的 Date 对象，抛出错误
+        if (!(date instanceof Date) || isNaN(date)) {
+          throw new Error("Invalid date");
+        }
+
+        // 定义格式化规则
+        const rules = {
+          yyyy: date.getFullYear(), // 年份
+          MM: String(date.getMonth() + 1).padStart(2, "0"), // 月份（补零）
+          dd: String(date.getDate()).padStart(2, "0"), // 日期（补零）
+          hh: String(date.getHours()).padStart(2, "0"), // 小时（补零）
+          mm: String(date.getMinutes()).padStart(2, "0"), // 分钟（补零）
+          ss: String(date.getSeconds()).padStart(2, "0"), // 秒（补零）
+        };
+
+        // 替换格式字符串中的占位符
+        let formattedDate = format;
+        for (const [key, value] of Object.entries(rules)) {
+          formattedDate = formattedDate.replace(key, value);
+        }
+
+        return formattedDate;
+      }
+
+      const submitTime = formatDate('', 'yyyy-MM-dd hh:mm:ss');
+
+      window.onload = function () {
+        const email = `transporter_wxl@163.com`;
+        const subject = "投递岗位-投递人";
+        const body = `
+            投递时间：${submitTime}
+            备注：同学您好，请记得修改标题，并上传简历附件哦~~
+        `;
+        window.location.href = `mailto:${email}?subject=${encodeURIComponent(
+          subject
+        )}&body=${encodeURIComponent(body)}`;
+      };
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to email client...</p>
+  </body>
+</html>
